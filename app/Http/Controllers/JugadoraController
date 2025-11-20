@@ -1,0 +1,65 @@
+<?php
+    namespace App\Http\Controllers;
+
+    use Illuminate\Http\Request;          // Para gestionar la petición HTTP (formularios, etc.)
+    use Illuminate\Support\Facades\Session; 
+
+    class JugadoraController {
+
+        public $jugadoras = [ 
+            ["nombre" => "Alexia Putellas",
+            "posicion" => "Migcampista",
+            "equipo" => "FC Barcelona Femení"],
+
+            ["nombre" => "Esther González",
+            "posicion" => "Davantera",
+            "equipo" => "Atlètic de Madrid"],
+
+            ["nombre" => "Misa Rodríguez",
+            "posicion" => "Portera",
+            "equipo" => "Real Madrid Femení"]
+            
+        ];
+
+        public function index() {
+            $juagoras = Session::get("jugadoras", $this->jugadoras);
+
+            return view('jugadoras.index', compact('jugadoras'));
+
+        }
+
+        public function show(string $nom) {
+            $estadis = Session::get('jugadoras', $this->jugadoras);
+
+            abort_if(!isset($jugadoras[$nom]), 404);
+
+            $jugadora = $jugadoras[$nom];
+
+            return view('jugadoras.show', compact('jugadora'));
+        }
+
+        public function create() {
+            return view("jugadoras.create");
+        }
+
+        public function store(Request $request) {
+            $formularioValidado = $request->validate([
+                'nombre' => 'required|min:3',
+                'equipo' => 'required|min:2',
+                'posicion' => 'required|in(Portera, Defensa, Migcampista, Davantera)'
+            ]);
+
+            $jugadoras = Session::get('jugadoras', $this->jugadoras);
+
+            $jugadoras[] = $formularioValidado;
+
+            Session::put('jugadoras', $jugadoras);
+
+            return redirect()->route('jugadoras.index')->with('success', 'Jugadora añadida correctamente');
+
+
+        }
+
+    }
+
+?>

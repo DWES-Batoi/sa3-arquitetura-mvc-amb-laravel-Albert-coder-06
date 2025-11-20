@@ -11,9 +11,9 @@
       </a>
     </li>
     <li>
-      {{-- Enlace de ejemplo para futuros listados de estadios --}}
-      <a class="text-white hover:underline" href="#">
-        Llistat d'Estadis
+
+      <a class="text-white hover:underline" href="{{ route('estadis.index') }}">
+        Guia d'Estadis
       </a>
     </li>
   </ul>
